@@ -1,0 +1,30 @@
+ 
+kong migrations bootstrap --force
+kong start
+
+
+https://my-json-server.typicode.com/typicode/demo/posts
+
+curl -i -X POST \
+ --url http://localhost:8001/services/ \
+ --data 'name=example-service' \
+ --data 'url=https://my-json-server.typicode.com'
+
+
+
+curl -i -X POST \
+ --url http://localhost:8001/services/example-service/routes \
+ --data 'hosts[]=example.com'
+
+ curl -i -X POST  \
+    --url http://localhost:8001/plugins/ \
+    --data "name=IDLvalidator" \
+    --data "config.url=http://192.168.1.200:8080/validate" \
+    --data "config.response=table" \
+    --data "config.timeout=10000" \
+    --data "config.keepalive=60000"
+
+
+
+	
+curl -I -H "Host: example.com" http://localhost:8000/
