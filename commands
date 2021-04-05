@@ -26,7 +26,7 @@ curl -i -X POST \
 
 
 	
-curl -I -H "Host: example.com" http://localhost:8000/typicode/demo/posts
+curl  -H "Host: example.com" http://localhost:8000/typicode/demo/posts
 
 
 https://my-json-server.typicode.com/typicode/demo/posts

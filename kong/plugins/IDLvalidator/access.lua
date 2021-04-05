@@ -110,7 +110,6 @@ function _M.execute(conf)
 
     local response_body
     if conf.response == "table" then 
-      ngx.log(ngx.WARN, body .. "********" .. ": " )
       response_body = JSON:decode(string.match(body, "%b{}"))
     else
       response_body = string.match(body, "%b{}")
