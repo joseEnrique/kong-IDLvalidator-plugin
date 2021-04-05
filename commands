@@ -3,7 +3,6 @@ kong migrations bootstrap --force
 kong start
 
 
-https://my-json-server.typicode.com/typicode/demo/posts
 
 curl -i -X POST \
  --url http://localhost:8001/services/ \
@@ -18,7 +17,7 @@ curl -i -X POST \
 
  curl -i -X POST  \
     --url http://localhost:8001/plugins/ \
-    --data "name=IDLvalidator" \
+    --data "name=idlvalidator" \
     --data "config.url=http://192.168.1.200:8080/validate" \
     --data "config.response=table" \
     --data "config.timeout=10000" \
@@ -27,4 +26,7 @@ curl -i -X POST \
 
 
 	
-curl -I -H "Host: example.com" http://localhost:8000/
+curl -I -H "Host: example.com" http://localhost:8000/typicode/demo/posts
+
+
+https://my-json-server.typicode.com/typicode/demo/posts

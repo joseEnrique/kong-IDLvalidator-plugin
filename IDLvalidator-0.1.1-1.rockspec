@@ -1,4 +1,4 @@
-package = "IDLvalidator"
+package = "idlvalidator"
 
 version = "0.1.1-1"
 
@@ -8,10 +8,10 @@ version = "0.1.1-1"
 
 supported_platforms = {"linux", "macosx"}
 
-local pluginName = "middleman"
+local pluginName = "idlvalidator"
 
 source = {
-  url = "https://github.com/pantsel/kong-middleman-plugin",
+  url = "https://github.com/pantsel/kong-idlvalidator-plugin",
   tag = "0.1.1"
 }
 
@@ -26,9 +26,9 @@ dependencies = {
 build = {
   type = "builtin",
   modules = {
-    ["kong.plugins.IDLvalidator.access"] = "kong/plugins/"..pluginName.."access.lua",
-    ["kong.plugins.IDLvalidator.handler"] = "kong/plugins/"..pluginName.."handler.lua",
-    ["kong.plugins.IDLvalidator.schema"] = "kong/plugins/"..pluginName.."schema.lua",
-	  ["kong.plugins.IDLvalidator.json"] = "kong/plugins/"..pluginName.."json.lua"
+    ["kong.plugins.idlvalidator.access"] = "kong/plugins/"..pluginName.."access.lua",
+    ["kong.plugins.idlvalidator.handler"] = "kong/plugins/"..pluginName.."handler.lua",
+    ["kong.plugins.idlvalidator.schema"] = "kong/plugins/"..pluginName.."schema.lua",
+	  ["kong.plugins.idlvalidator.json"] = "kong/plugins/"..pluginName.."json.lua"
   }
 }

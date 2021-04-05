@@ -1,4 +1,4 @@
-local JSON = require "kong.plugins.middleman.json"
+local JSON = require "kong.plugins.idlvalidator.json"
 local cjson = require "cjson"
 local url = require "socket.url"
 
@@ -39,7 +39,7 @@ function _M.execute(conf)
     return
   end
 
-  local name = "[middleman] "
+  local name = "[idlvalidator] "
   local ok, err
   local parsed_url = parse_url(conf.url)
   local host = parsed_url.host
@@ -110,6 +110,7 @@ function _M.execute(conf)
 
     local response_body
     if conf.response == "table" then 
+      ngx.log(ngx.WARN, body .. "********" .. ": " )
       response_body = JSON:decode(string.match(body, "%b{}"))
     else
       response_body = string.match(body, "%b{}")
@@ -124,6 +125,7 @@ end
 function _M.compose_payload(parsed_url)
     local headers = get_headers()
     local uri_args = get_uri_args()
+    local method = get_method()
     local next = next
     
     read_body()
@@ -141,7 +143,7 @@ function _M.compose_payload(parsed_url)
     
     local raw_json_headers = JSON:encode(headers)
     local raw_json_body_data = JSON:encode(body_data)
-
+    local raw_json_method = JSON:encode(method)
     local raw_json_uri_args
     if next(uri_args) then 
       raw_json_uri_args = JSON:encode(uri_args) 
@@ -151,8 +153,7 @@ function _M.compose_payload(parsed_url)
       raw_json_uri_args = "{}"
     end
 
-    local payload_body = [[{"headers":]] .. raw_json_headers .. [[,"uri_args":]] .. raw_json_uri_args.. [[,"body_data":]] .. raw_json_body_data .. [[}]]
-    
+    local payload_body = [[{"headers":]] .. raw_json_headers .. [[,"method":]] .. raw_json_method .. [[,"params":]] .. raw_json_uri_args .. [[,"payload":]] .. raw_json_body_data .. [[}]]
     local payload_headers = string_format(
       "POST %s HTTP/1.1\r\nHost: %s\r\nConnection: Keep-Alive\r\nContent-Type: application/json\r\nContent-Length: %s\r\n",
       url, parsed_url.host, #payload_body)

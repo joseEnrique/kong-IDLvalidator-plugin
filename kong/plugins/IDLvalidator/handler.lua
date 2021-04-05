@@ -1,17 +1,17 @@
 local BasePlugin = require "kong.plugins.base_plugin"
-local access = require "kong.plugins.middleman.access"
+local access = require "kong.plugins.idlvalidator.access"
 
-local MiddlemanHandler = BasePlugin:extend()
+local IdlValidatorHandler = BasePlugin:extend()
 
-MiddlemanHandler.PRIORITY = 900
+IdlValidatorHandler.PRIORITY = 900
 
-function MiddlemanHandler:new()
-  MiddlemanHandler.super.new(self, "middleman")
+function IdlValidatorHandler:new()
+  IdlValidatorHandler.super.new(self, "idlvalidator")
 end
 
-function MiddlemanHandler:access(conf)
-  MiddlemanHandler.super.access(self)
+function IdlValidatorHandler:access(conf)
+  IdlValidatorHandler.super.access(self)
   access.execute(conf)
 end
 
-return MiddlemanHandler
+return IdlValidatorHandler

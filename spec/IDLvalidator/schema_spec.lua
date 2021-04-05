@@ -1,4 +1,4 @@
-local PLUGIN_NAME = "middleman"
+local PLUGIN_NAME = "idlvalidator"
 
 
 -- helper function to validate data against a schema

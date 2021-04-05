@@ -1,11 +1,11 @@
-# Kong Middleman
+# Kong idlvalidator
 
 A Kong plugin that enables an extra HTTP POST request before proxying the original.
 
 ## Description
 
 In some cases, you may need to validate a request to a separate server or service using custom logic before Kong proxies it to your API.
-Middleman enables you to do that by allowing you to make an extra HTTP request before calling an API endpoint.
+Idlvalidator enables you to do that by allowing you to make an extra HTTP request before calling an API endpoint.
 
 ## Installation
 
@@ -15,16 +15,16 @@ Navigate to kong/plugins folder and clone this repo
 
 <pre>
 $ cd /path/to/kong/plugins
-$ git clone https://github.com/pantsel/kong-middleman-plugin middleman
-$ cd middleman
+$ git clone https://github.com/pantsel/kong-idlvalidator-plugin idlvalidator
+$ cd idlvalidator
 $ luarocks make *.rockspec
 </pre>
 
-To make Kong aware that it has to look for the middleman plugin, you'll have to add it to the custom_plugins property in your configuration file.
+To make Kong aware that it has to look for the idlvalidator plugin, you'll have to add it to the custom_plugins property in your configuration file.
 
 <pre>
 custom_plugins:
-    - middleman
+    - idlvalidator
 </pre>
 
 Restart Kong and you're ready to go.
@@ -32,7 +32,7 @@ Restart Kong and you're ready to go.
 ## luarocks
 
 <pre>
-$ luarocks install middleman
+$ luarocks install idlvalidator
 </pre>
 
 
@@ -42,7 +42,7 @@ You can add the plugin on top of an API by executing the following request on yo
 
 <pre>
 $ curl -X POST http://kong:8001/apis/{api}/plugins \
-    --data "name=middleman" \
+    --data "name=idlvalidator" \
     --data "config.url=http://myserver.io/validate"
     --data "config.response=table"
     --data "config.timeout=10000"
@@ -59,7 +59,7 @@ $ curl -X POST http://kong:8001/apis/{api}/plugins \
 <tr>
 <td><code>name</code></td>
 <td></td>
-<td>The name of the plugin to use, in this case: <code>middleman</code></td>
+<td>The name of the plugin to use, in this case: <code>idlvalidator</code></td>
 </tr>
 <tr>
 <td><code>config.url</code><br><em>required</em></td>
@@ -69,7 +69,7 @@ $ curl -X POST http://kong:8001/apis/{api}/plugins \
 <tr>
 <td><code>config.response</code><br><em>required</em></td>
 <td></td>
-<td>The type of response the middleman service is going to respond with</td>
+<td>The type of response the idlvalidator service is going to respond with</td>
 </tr>
 <tr>
 <td><code>config.timeout</code></td>
@@ -83,7 +83,7 @@ $ curl -X POST http://kong:8001/apis/{api}/plugins \
 </tr>
 </tbody></table>
 
-Middleman will execute a JSON <code>POST</code> request to the specified <code>url</code> with the following body:
+Idlvalidator will execute a JSON <code>POST</code> request to the specified <code>url</code> with the following body:
 
 <table>
     <tr>
@@ -105,5 +105,4 @@ Middleman will execute a JSON <code>POST</code> request to the specified <code>u
 </table>
 
 In the scope of your own endpoint, you may validate any of these attributes and accept or reject the request according to your needs. If an HTTP response code of 299 or less is returned, the request is accepted. Any response code above 299 will cause the request to be rejected.  
-
 
