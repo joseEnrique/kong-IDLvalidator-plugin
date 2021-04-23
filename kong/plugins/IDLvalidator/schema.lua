@@ -21,8 +21,8 @@ local schema = {
               type = "string"} },
           { response =  { required = true, default = "table", type = "string"} },
           {timeout = { default = 10000, type = "number" }},
+          {validationUri = { default = '/', type = "string" }},
           {keepalive = { default = 60000, type = "number" }},
-
         },
       },
     },

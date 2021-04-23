@@ -1,4 +1,6 @@
- 
+PATH=$PATH:~/.local/bin
+pongo shell 
+
 kong migrations bootstrap --force
 kong start
 
@@ -18,15 +20,25 @@ curl -i -X POST \
  curl -i -X POST  \
     --url http://localhost:8001/plugins/ \
     --data "name=idlvalidator" \
-    --data "config.url=http://192.168.1.200:8080/validate" \
+    --data "config.url=http://192.168.250.18:8080" \
     --data "config.response=table" \
     --data "config.timeout=10000" \
-    --data "config.keepalive=60000"
+    --data "config.validationUri=/validates" \
+    --data "config.keepalive=60000" 
 
 
 
 	
-curl  -H "Host: example.com" http://localhost:8000/typicode/demo/posts
+curl  -H "Host: example.com" http://localhost:8000/typicode/demo/posts?p1=1
 
 
-https://my-json-server.typicode.com/typicode/demo/posts
+
+
+ curl -H "Host: example.com" \
+ -H "Content-Type: application/json" -i -X POST  \
+    --url http://localhost:8000/typicode/demo/posts?test=1 \
+    --data '{"username":"xyz","password":"test"}'
+
+
+
+https://my-json-server.typicode.com/typicode/demo/posts?a=1

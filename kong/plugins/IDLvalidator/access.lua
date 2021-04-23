@@ -1,4 +1,4 @@
-local JSON = require "kong.plugins.idlvalidator.json"
+--local JSON = require "kong.plugins.idlvalidator.json"
 local cjson = require "cjson"
 local url = require "socket.url"
 
@@ -6,7 +6,7 @@ local string_format = string.format
 
 local kong_response = kong.response
 
-local get_headers = ngx.req.get_headers
+-- local get_headers = ngx.req.get_headers
 local get_uri_args = ngx.req.get_uri_args
 local read_body = ngx.req.read_body
 local get_body = ngx.req.get_body_data
@@ -19,7 +19,7 @@ local HTTPS = "https"
 
 local _M = {}
 
-local function parse_url(host_url)
+local function parse_url(host_url,path)
   local parsed_url = url.parse(host_url)
   if not parsed_url.port then
     if parsed_url.scheme == HTTP then
@@ -28,9 +28,10 @@ local function parse_url(host_url)
       parsed_url.port = 443
      end
   end
-  if not parsed_url.path then
-    parsed_url.path = "/"
-  end
+  parsed_url.path = path
+--  if not parsed_url.path then
+--    parsed_url.path = "/"
+--  end
   return parsed_url
 end
 
@@ -41,7 +42,7 @@ function _M.execute(conf)
 
   local name = "[idlvalidator] "
   local ok, err
-  local parsed_url = parse_url(conf.url)
+  local parsed_url = parse_url(conf.url,conf.validationUri)
   local host = parsed_url.host
   local port = tonumber(parsed_url.port)
   local payload = _M.compose_payload(parsed_url)
@@ -110,7 +111,7 @@ function _M.execute(conf)
 
     local response_body
     if conf.response == "table" then 
-      response_body = JSON:decode(string.match(body, "%b{}"))
+      response_body = cjson.decode(string.match(body, "%b{}"))
     else
       response_body = string.match(body, "%b{}")
     end
@@ -122,16 +123,18 @@ end
 
 -- Composing the payload to send
 function _M.compose_payload(parsed_url)
-    local headers = get_headers()
+    -- local headers = get_headers()
     local uri_args = get_uri_args()
     local method = get_method()
+    local uri  = string.gsub(ngx.var.request_uri, "?.*", "")
     local next = next
     
     read_body()
     local body_data = get_body()
 
-    headers["target_uri"] = ngx.var.request_uri
-    headers["target_method"] = ngx.var.request_method
+    -- headers["target_uri"] = split(ngx.var.request_uri,'?')[0]
+    -- headers["target_uri"] = string.gsub(ngx.var.request_uri, "?.*", "")
+    -- headers["target_method"] = ngx.var.request_method
 
     local url
     if parsed_url.query then
@@ -140,19 +143,20 @@ function _M.compose_payload(parsed_url)
       url = parsed_url.path
     end
     
-    local raw_json_headers = JSON:encode(headers)
-    local raw_json_body_data = JSON:encode(body_data)
-    local raw_json_method = JSON:encode(method)
+    -- local raw_json_headers = JSON:encode(headers)
+    local raw_json_body_data = cjson.encode(body_data)
+    local raw_json_method = cjson.encode(method)
+    local raw_uri = cjson.encode(uri)
     local raw_json_uri_args
     if next(uri_args) then 
-      raw_json_uri_args = JSON:encode(uri_args) 
+      raw_json_uri_args = cjson.encode(uri_args)
     else
       -- Empty Lua table gets encoded into an empty array whereas a non-empty one is encoded to JSON object.
       -- Set an empty object for the consistency.
       raw_json_uri_args = "{}"
     end
 
-    local payload_body = [[{"headers":]] .. raw_json_headers .. [[,"method":]] .. raw_json_method .. [[,"params":]] .. raw_json_uri_args .. [[,"payload":]] .. raw_json_body_data .. [[}]]
+    local payload_body = [[{"uri":]] .. raw_uri .. [[,"method":]] .. raw_json_method .. [[,"params":]] .. raw_json_uri_args .. [[,"payload":]] .. raw_json_body_data .. [[}]]
     local payload_headers = string_format(
       "POST %s HTTP/1.1\r\nHost: %s\r\nConnection: Keep-Alive\r\nContent-Type: application/json\r\nContent-Length: %s\r\n",
       url, parsed_url.host, #payload_body)
