@@ -23,7 +23,7 @@ curl -i -X POST \
     --data "config.url=http://192.168.250.18:8080" \
     --data "config.response=table" \
     --data "config.timeout=10000" \
-    --data "config.validationUri=/validates" \
+    --data "config.validationUri=/validate" \
     --data "config.keepalive=60000" 
 
 
