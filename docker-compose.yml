@@ -1,7 +1,7 @@
 version: '2.2'
 
 volumes:
-  kong_data: {}
+  kong_data2: {}
   konga_data: {}
 
 networks:
@@ -10,9 +10,11 @@ networks:
 
 services:
   kong:
-    build:
-      context: .
+    image: kong
+    # build:
+    #   context: .
     user: ${KONG_USER:-root}
+    #command: kong migrations bootstrap
     networks:
       - kong_network
     ports:
@@ -20,13 +22,19 @@ services:
       - "8001:8001/tcp"
       - "8443:8443/tcp"
       - "8444:8444/tcp"
+    volumes:
+      - ./plugins:/plugins
+      - ./kong.conf:/etc/kong/kong.conf
     environment:
+      KONG_ADMIN_LISTEN: 0.0.0.0:8001
       KONG_PG_DATABASE: ${KONG_PG_DATABASE:-kong}
       KONG_PG_HOST: ${KONG_PG_HOST:-postgres}
       KONG_PG_PORT: ${KONG_PG_PORT:-5432}
       KONG_PG_PASSWORD: ${KONG_PG_PASSWORD:-kong}
       KONG_PG_USER: ${KONG_PG_USER:-kong}
+      KONG_LUA_PACKAGE_PATH: /plugins/?.lua;/plugins/?/init.lua;
       KONG_PROXY_ERROR_LOG: /dev/stdout
+      KONG_CUSTOM_PLUGINS: idlvalidator
       KONG_PROXY_ACCESS_LOG: /dev/stdout
       KONG_LOG_LEVEL: info
     depends_on:
@@ -53,4 +61,4 @@ services:
     networks:
       - kong_network
     volumes:
-      - kong_data:/var/lib/postgres/data
+      - kong_data2:/var/lib/postgres/data
