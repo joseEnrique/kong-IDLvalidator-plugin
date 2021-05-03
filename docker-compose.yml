@@ -1,7 +1,7 @@
 version: '2.2'
 
 volumes:
-  kong_data2: {}
+  kong_data5: {}
   konga_data: {}
 
 networks:
@@ -61,4 +61,4 @@ services:
     networks:
       - kong_network
     volumes:
-      - kong_data2:/var/lib/postgres/data
+      - kong_data5:/var/lib/postgres/data

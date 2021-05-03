@@ -147,6 +147,7 @@ function _M.compose_payload(parsed_url)
     local raw_json_body_data = cjson.encode(body_data)
     local raw_json_method = cjson.encode(method)
     local raw_uri = cjson.encode(uri)
+    -- local raw_url = cjson.encode(parsed_url.path)
     local raw_json_uri_args
     if next(uri_args) then 
       raw_json_uri_args = cjson.encode(uri_args)
@@ -156,9 +157,9 @@ function _M.compose_payload(parsed_url)
       raw_json_uri_args = "{}"
     end
 
-    local payload_body = [[{"uri":]] .. raw_uri .. [[,"method":]] .. raw_json_method .. [[,"params":]] .. raw_json_uri_args .. [[,"payload":]] .. raw_json_body_data .. [[}]]
+    local payload_body = [[{"uri":]] .. raw_uri .. [[,"method":]] .. raw_json_method .. [[,"params":]] .. raw_json_uri_args .. [[}]]
     local payload_headers = string_format(
-      "POST %s HTTP/1.1\r\nHost: %s\r\nConnection: Keep-Alive\r\nContent-Type: application/json\r\nContent-Length: %s\r\n",
+      "PUT %s HTTP/1.1\r\nHost: %s\r\nConnection: Keep-Alive\r\nContent-Type: application/json\r\nContent-Length: %s\r\n",
       url, parsed_url.host, #payload_body)
   
     return string_format("%s\r\n%s", payload_headers, payload_body)

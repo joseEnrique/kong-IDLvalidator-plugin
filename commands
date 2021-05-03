@@ -12,13 +12,22 @@ curl -i -X POST \
  --data 'url=https://my-json-server.typicode.com'
 
 
+curl -i -X POST \
+ --url http://localhost:8001/services/ \
+ --data 'name=example-service1' \
+ --data 'url=https://my-json-server.typicode.com'
+
+curl -i -X POST \
+ --url http://localhost:8001/services/example-service1/routes \
+ --data 'hosts[]=example1.com'
+
 
 curl -i -X POST \
  --url http://localhost:8001/services/example-service/routes \
  --data 'hosts[]=example.com'
 
  curl -i -X POST  \
-    --url http://localhost:8001/plugins/ \
+    --url http://localhost:8001/services/example-service// \
     --data "name=idlvalidator" \
     --data "config.url=http://192.168.250.18:8080" \
     --data "config.response=table" \
@@ -29,7 +38,7 @@ curl -i -X POST \
 
 
 	
-curl  -H "Host: example.com" http://localhost:8000/typicode/demo/posts?p1=1
+curl  -H "Host: test" http://localhost:8000/typicode/demo/posts?p1=1
 
 
 
