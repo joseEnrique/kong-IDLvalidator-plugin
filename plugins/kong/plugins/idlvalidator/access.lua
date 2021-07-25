@@ -104,6 +104,17 @@ function _M.execute(conf)
     return
   end
 
+
+
+  if status_code == 400 then
+    if err then 
+      ngx.log(ngx.ERR, name .. "failed to read response from " .. host .. ":" .. tostring(port) .. ": ", err)
+    end
+     local res = {}
+     res["message"] = "IdlReasoner has detected this request is wrong"
+    return kong_response.exit(400, res)
+  end
+
   if status_code > 299 then
     if err then 
       ngx.log(ngx.ERR, name .. "failed to read response from " .. host .. ":" .. tostring(port) .. ": ", err)
@@ -115,9 +126,9 @@ function _M.execute(conf)
     else
       response_body = string.match(body, "%b{}")
     end
-
-    return kong_response.send(status_code, response_body)
+    return kong_response.exit(status_code, response_body)
   end
+
 
 end
 

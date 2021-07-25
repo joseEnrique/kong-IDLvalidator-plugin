@@ -8,7 +8,7 @@ kong start
 
 curl -i -X POST \
  --url http://localhost:8001/services/ \
- --data 'name=example-service' \
+ --data 'name=example-doc' \
  --data 'url=https://my-json-server.typicode.com'
 
 
@@ -18,16 +18,16 @@ curl -i -X POST \
  --data 'url=https://my-json-server.typicode.com'
 
 curl -i -X POST \
- --url http://localhost:8001/services/example-service1/routes \
- --data 'hosts[]=example1.com'
+ --url http://localhost:8001/services/example-doc/routes \
+ --data 'hosts[]=example-doc'
 
 
 curl -i -X POST \
- --url http://localhost:8001/services/example-service/routes \
+ --url http://localhost:8001/services/example-se  rvice/routes \
  --data 'hosts[]=example.com'
 
  curl -i -X POST  \
-    --url http://localhost:8001/services/example-service// \
+    --url http://localhost:8001/services/example-doc2/ \
     --data "name=idlvalidator" \
     --data "config.url=http://192.168.250.18:8080" \
     --data "config.response=table" \
@@ -36,7 +36,7 @@ curl -i -X POST \
     --data "config.keepalive=60000" 
 
 
-
+AIzaSyBS1XG4F9_aC1KYOAj9aqJWfc2riyT6Wwo
 	
 curl  -H "Host: test" http://localhost:8000/typicode/demo/posts?p1=1
 
@@ -50,4 +50,25 @@ curl  -H "Host: test" http://localhost:8000/typicode/demo/posts?p1=1
 
 
 
-https://my-json-server.typicode.com/typicode/demo/posts?a=1
+https://my-json-server.typicode.com/typicode/demo/posts?a=
+
+
+
+
+curl -X 'GET' \
+  'https://www.googleapis.com/youtube/v3/search?channelId=UCvosUrZ7hXpzAyobhfztg4w&channelType=any&eventType=completed&forDeveloper=true&location=37.42307%2C-122.08427&locationRadius=1m&maxResults=5&order=relevance&part=snippet&type=video%2Cchannel%2Cplaylist&key=AIzaSyBS1XG4F9_aC1KYOAj9aqJWfc2riyT6Wwo' \
+  -H 'accept: application/json'
+
+
+
+
+  curl -X 'GET' \
+  'https://www.googleapis.com/youtube/v3/search?maxResults=5&order=relevance&part=snippet&type=video%2Cchannel%2Cplaylist&key=AIzaSyBS1XG4F9_aC1KYOAj9aqJWfc2riyT6Wwo' \
+  -H 'accept: application/json'
+
+
+
+
+  curl  -H "Host: testdeverdad" http://localhost:8000/youtube/v3/search?maxResults=5&order=relevance&part=snippet&type=video%2Cchannel%2Cplaylist&key=AIzaSyBS1XG4F9_aC1KYOAj9aqJWfc2riyT6Wwo
+
+  curl  -H "Host: realtest" "http://localhost:8000/youtube/v3/search?channelId=UCvosUrZ7hXpzAyobhfztg4w&channelType=any&eventType=completed&forDeveloper=true&location=37.42307%2C-122.08427&locationRadius=1m&maxResults=5&order=relevance&part=snippet&type=video%2Cchannel%2Cplaylist&key=AIzaSyBS1XG4F9_aC1KYOAj9aqJWfc2riyT6Wwo"
